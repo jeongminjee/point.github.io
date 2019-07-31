@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY = os.environ.get(‘DJANGO_SECRET_KEY’, '51p+tw5lk1xvcn=y)-a2*2g*-0b=ps-q4)1%n9jl-h)m*tfs7(')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '51p+tw5lk1xvcn=y)-a2*2g*-0b=ps-q4)1%n9jl-h)m*tfs7(')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,7 +84,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+db_from_env = dj_database_url.config(conn_max_age = 500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
